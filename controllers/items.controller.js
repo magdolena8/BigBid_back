@@ -19,6 +19,15 @@ async function getOwnerItems(req, res, next) {
   }
 }
 
+async function getOwnerItemsTest(req, res, next) {
+  try {
+    res.json(await itemService.getOwnerItems(1, 1));
+  } catch (err) {
+    console.error(`Error items controller`, err.message);
+    next(err);
+  }
+}
+
 async function getAllMarketItems(req, res, next) {
   try {
     const { user, page } = req.query;
@@ -32,4 +41,5 @@ async function getAllMarketItems(req, res, next) {
 module.exports = {
   getOwnerItems,
   getAllMarketItems,
+  getOwnerItemsTest,
 };

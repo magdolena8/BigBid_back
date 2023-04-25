@@ -3,14 +3,12 @@ const dbConfig = require("../config/db.config");
 const pageCalculator = require("../utils/page.calculator");
 
 async function getOwnerItems(ownerId, pageNumber) {
-  console.log([ownerId, pageNumber]);
+  console.log({ ownerId, pageNumber });
   const pool = mysql.createPool(dbConfig);
   const [limit, offset] = pageCalculator(pageNumber, process.env.PAGE_SIZE);
   console.log([limit, offset]);
-  const [resultSet] = await pool.query("call sp_get_owner_items(?, ?, ?)", [
+  const [resultSet] = await pool.query("call sp_get_owner_items(?, 100, 0)", [
     ownerId,
-    limit,
-    offset,
   ]);
   console.log(resultSet[0]);
   return resultSet[0];
