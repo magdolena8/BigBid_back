@@ -6,6 +6,7 @@ const itemsRouter = require("./routes/items.route");
 const usersRouter = require("./routes/users.route");
 const marketRouter = require("./routes/market.route");
 const authRouter = require("./routes/auth.route");
+const bidsRouter = require("./routes/bids.route");
 
 const express = require("express");
 const dbConfig = require("./config/db.config");
@@ -22,13 +23,12 @@ app.use("/api/items", itemsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/market", marketRouter);
 app.use("/api/auth", authRouter);
-
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json({extended:true}))
+app.use("/api/bids", bidsRouter);
 
 //static
 // app.use(express.static('/images'))
-app.use("/api/images", express.static(path.join(__dirname, "images")));
+app.use("/api/image", express.static(path.join(__dirname, "image")));
+app.use("/api/image", express.static(path.join(__dirname, "avatar")));
 
 app.use(errorMiddleware);
 

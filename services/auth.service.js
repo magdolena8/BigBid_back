@@ -5,13 +5,6 @@ const AuthError = require("../exceptions/auth.error");
 
 async function loginUser(login, loginType, pswHash) {
   const pool = mysql.createPool(dbConfig);
-  //   const [resultSet] = await pool
-  //     .query("call sp_login_user(?, ?, ?)", [login, loginType, pswHash])
-  //     .catch((err) => {
-  //       return err.message;
-  //     });
-  //   //   console.log(resultSet[0][0]);
-  //   return resultSet[0][0];
   return pool
     .query("call sp_login_user(?, ?, ?)", [login, loginType, pswHash])
     .then((result) => {

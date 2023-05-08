@@ -1,7 +1,6 @@
 const ApiError = require("../exceptions/api.error");
-const AuthError = require("../exceptions/auth.error");
 
-module.exports = function (err, req, res, next) {
+module.exports = function (err, res) {
   console.log(err);
   if (err instanceof ApiError) {
     return res
