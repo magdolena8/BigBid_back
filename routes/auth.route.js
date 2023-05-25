@@ -4,6 +4,7 @@ const authController = require("../controllers/auth.controller.js");
 
 router.post("/login", authController.loginUser);
 router.post("/register", authController.registerUser);
+router.post("/update", authController.editUser);
 // router.get("/", itemsController.getOwnerItemsTest); //test for Android connection
 
 module.exports = router;

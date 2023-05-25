@@ -1,6 +1,11 @@
 require("dotenv").config();
 const path = require("path");
+const fs = require("fs");
 const bodyParser = require("body-parser");
+const fileUpload = require("express-fileupload");
+const morgan = require("morgan");
+const multer = require("multer");
+const cors = require("cors");
 
 const itemsRouter = require("./routes/items.route");
 const usersRouter = require("./routes/users.route");
@@ -15,9 +20,16 @@ const errorMiddleware = require("./middleweares/error.middleware");
 var app = express();
 
 const PORT = process.env.PORT || 5000;
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({ extended: true }));
 app.use(bodyParser.raw({ extended: true }));
+app.use(morgan("dev"));
+app.use(
+  fileUpload({
+    createParentPath: true,
+  })
+);
 
 app.use("/api/items", itemsRouter);
 app.use("/api/users", usersRouter);
@@ -27,8 +39,36 @@ app.use("/api/bids", bidsRouter);
 
 //static
 // app.use(express.static('/images'))
+app.use("/api/image/avatar", (req, res, next) => {
+  const avatarDir = path.join(__dirname, "image/avatar");
+  const fileName = req.url.slice(1); // remove leading '/'
+  // const extensions = [".png", ".jpg", ".jpeg"];
+  // for (const ext of extensions) {
+  // const filePath = path.join(avatarDir, fileName + ext);
+  const filePath = path.join(avatarDir, fileName);
+  if (fs.existsSync(filePath)) {
+    res.sendFile(filePath);
+    return;
+  }
+  // }
+  next();
+});
+
+// app.use("/api/image/photo", (req, res, next) => {
+//   const imageDir = path.join(__dirname, "image/photo");
+//   const fileName = req.url.slice(1); // remove leading '/'
+//   const extensions = [".png", ".jpg", ".jpeg"];
+//   for (const ext of extensions) {
+//     const filePath = path.join(imageDir, fileName + ext);
+//     if (fs.existsSync(filePath)) {
+//       res.sendFile(filePath);
+//       return;
+//     }
+//   }
+//   next();
+// });
 app.use("/api/image", express.static(path.join(__dirname, "image")));
-app.use("/api/image", express.static(path.join(__dirname, "avatar")));
+// app.use("/api/avatar", express.static(path.join(__dirname, "avatar")));
 
 app.use(errorMiddleware);
 

@@ -1,10 +1,9 @@
 const mysql = require("mysql2/promise");
 const dbConfig = require("../config/db.config");
 const AuthError = require("../exceptions/auth.error");
-// const ApiError = require("../exceptions/api.error");
+var pool = require('../config/db.config');
 
 async function loginUser(login, loginType, pswHash) {
-  const pool = mysql.createPool(dbConfig);
   return pool
     .query("call sp_login_user(?, ?, ?)", [login, loginType, pswHash])
     .then((result) => {
@@ -18,7 +17,6 @@ async function loginUser(login, loginType, pswHash) {
 }
 
 async function registerUser(email, username, paswHash) {
-  const pool = mysql.createPool(dbConfig);
   return pool
     .query("call sp_register_user(?, ?, ?)", [email, username, paswHash])
     .then((result) => {
